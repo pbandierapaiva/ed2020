@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 void  main() {
-	printf("Olá mundo!\nsegunda versão");
+	printf("Olá mundo!\nterceira versão");
 }
 
 
