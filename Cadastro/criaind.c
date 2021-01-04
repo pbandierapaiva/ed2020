@@ -1,7 +1,7 @@
 /*
-* Programa: cad.c
+* Programa: criaind.c
 * 
-* Lê arquivo CSV baixado do transparencia.gov com dados de servidores públicos
+* Lê arquivo CSV baixado do transparencia.gov com dados de servidores públicos e cria arquivo de índice
 * 
 */
 

@@ -1,3 +1,12 @@
+/*
+* Arquivo: util.c
+* 
+* Funções utilizadas pelo sistema de pesquisa de cadastro
+* 
+*/
+
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

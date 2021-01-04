@@ -3,7 +3,7 @@
 *
 * Arquivo de cabeçalhos e definições 
 */
-
+  
 #define MAXLIN 1000
 #define MAXSTR 200
 
