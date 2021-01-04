@@ -12,18 +12,17 @@
 
 #include "cadastro.h"
 
-
 int main() {
 
-	criaIndex("/data/datasets/ed2020/cad2020.csv","/data/datasets/ed2020/cad2020.ind");
-	
+	criaIndice(DADOS,INDICE);
+
 }
 
-void criaIndex(char *nomearq, char *nomeind) {
+void criaIndice(char *nomearq, char *nomeind) {
 	FILE *entra, *sai;
 	char linha[MAXLIN];
 	char dado[MAXSTR];
-	Cadastro cad;
+	IndiceCadastro cad;
 	
 	entra = fopen(nomearq, "r");
 	sai = fopen(nomeind, "wb");
@@ -32,46 +31,21 @@ void criaIndex(char *nomearq, char *nomeind) {
 		printf("\nErro de abertura de arquivo\n\n");
 		return;
 		}
+	fgets( linha, MAXLIN, entra );
+	cad.localiza = ftell(entra);
 	
 	while( fgets( linha, MAXLIN, entra ) ) {
-		extrai( linha, 1, dado );
+		extrai( linha, NOME, dado );
 		strcpy(cad.nome, dado);
-		cad.loc = ftell(entra);
-		
 		fwrite( &cad, sizeof(cad), 1, sai );
+		
+		cad.localiza = ftell(entra);
 	}	
 
 
 }
 
 
-void extrai( char *lin,  int elem, char *d ) {
-
-	char linha[MAXLIN], *p, *q;
-	int i=0;
-	
-	strcpy( linha, lin );
-	p = linha;
-	
-	while( *p!='\0' ) {		
-		if( elem == i ) {
-			if( *p=='"' )	p++;
-			q = p;
-			while( *q != '"' ) q++;
-			*q ='\0';
-			strcpy( d, p);
-			return;
-		}
-	
-		if( *p==';') {
-			i++;
-			}
-		p++;
-		}
-}
-	
-	
-	
 
 
 
