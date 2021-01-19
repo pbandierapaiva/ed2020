@@ -20,6 +20,11 @@ typedef struct INDICECAD {
 	char nome[MAXSTR];
 	unsigned long localiza;
 	} IndiceCadastro;
+	
+typedef struct NO {
+	IndiceCadastro dado;
+	no *prox;
+	} no;
 
 // Define números de campos do arquivo para ser usado como elem da função extrai()
 
