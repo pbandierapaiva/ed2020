@@ -5,6 +5,7 @@
 *  
 */
 
+#define TABMAX 10000
 
 #include <stdio.h>
 #include <string.h>
@@ -81,7 +82,6 @@ int tamBalde(  struct Pilha *pilha ){
 	return conta;
 	}
 
-#define TABMAX 100 //0000
 
 int main() {
 	int i;
@@ -115,11 +115,12 @@ int main() {
 	
 	// Conta quantos itens em cada balde
 	FILE *out;
-	out = fopen("reshash.csv","w");
 	
-	fprintf( out, "i, hash, hash0\n");	
+	out = fopen("results_hash_1M.csv","w");
+	
+	fprintf( out, "i,comhash,comhash0\n");	
 	for(i=0; i< TABMAX; i++) {
-		fprintf(out, "%d, %d, %d\n", i, tamBalde(hashtable[i]), tamBalde(hash0table[i]) );
+		fprintf(out, "%d,%d,%d\n", i, tamBalde(hashtable[i]), tamBalde(hash0table[i]) );
 	}
 	fclose(out);
 	return 0;
