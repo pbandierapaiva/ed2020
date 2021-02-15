@@ -14,24 +14,10 @@
 #include "cadastro.h"
 
 
-
-void main(){
-	IndiceCadastro item;
-	no *noRaiz=NULL;
-
-	strcpy( item.nome, "JOAO" );
-	item.localiza = 100;
-	
-	insere( item, &noRaiz);
-
-
-}
-
-
 void insere( IndiceCadastro pDado, no *nopai) {
 	no *novoNo, *paux;
 	
-	novoNo = malloc( sizeof( no )  )
+	novoNo = malloc( sizeof( no )  );
 	
 	novoNo->dado = pDado;
 	novoNo->prox = NULL;
@@ -46,22 +32,8 @@ void insere( IndiceCadastro pDado, no *nopai) {
 	while( paux->prox ) {
 		paux = paux->prox;
 		}
-	paux->prox = novoNo
+	paux->prox = novoNo;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void extrai( char *lin,  int elem, char *d ) {

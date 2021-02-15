@@ -23,7 +23,7 @@ typedef struct INDICECAD {
 	
 typedef struct NO {
 	IndiceCadastro dado;
-	no *prox;
+	struct NO *prox;
 	} no;
 
 // Define números de campos do arquivo para ser usado como elem da função extrai()
