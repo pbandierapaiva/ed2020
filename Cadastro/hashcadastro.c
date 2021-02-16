@@ -109,6 +109,10 @@ int main() {
 		// na tabela de dispersão "hashtable", acesso o índice retornado pela função "hash" ou "hash0" 
 		insereBalde( nome, ftell(entra), & (hashtable[ hash( nome, TAMHASH )])  );    
 		insereBalde( nome, ftell(entra), & (hash0table[ hash0( nome, TAMHASH )])  );
+		
+		i++;
+		if( ! i%100 )
+			printf("\b\b\b\b\b\b\b\b\b%d", i++);
 		}
 	
 	fclose(entra);
