@@ -5,7 +5,7 @@
 *  
 */
 
-#define TAMHASH 100000
+#define TAMHASH 65536
 
 #include <stdio.h>
 #include <string.h>
@@ -14,7 +14,7 @@
 
 #include "cadastro.h"
 
-
+// Algoritmo simples de hash
 unsigned int hash(const char *key, unsigned int size)
 {
 	int hash = 401;
@@ -29,7 +29,7 @@ unsigned int hash(const char *key, unsigned int size)
 
 }
 
-
+// Algoritmo mais simples de hash!
 unsigned int hash0(const char *key, unsigned int size)
 {
 	unsigned int i;
@@ -45,33 +45,36 @@ unsigned int hash0(const char *key, unsigned int size)
 	return hash;
 }
 
-struct Pilha {
-	char nome[300];			//
-	unsigned long int local;	// DADOS
-	struct Pilha *prox;
-};
+// Estrutura para armazenar Baldes de ítens (item = nome+ localização no arquivo CSV)
+typedef struct BALDE {
+	char nome[300];			// DADOS
+	unsigned long int local;	// _______
+	struct BALDE *prox;		// ponteiro para próximo
+} Balde;
 
-void insereBalde(char *chave, unsigned long loc, struct Pilha **pilha) {
-	struct Pilha *novoNo;
+// Insere dado numa estrutura de dados Balde
+void insereBalde(char *chave, unsigned long loc, Balde **balde) {
+	Balde *novoNo;
 	
-	novoNo = malloc( sizeof(struct Pilha) );
+	novoNo = malloc( sizeof(Balde) );
 	strcpy( novoNo->nome,chave );
 	novoNo->local = loc;
 	novoNo->prox = NULL;
 	
-	if( *pilha == NULL ) 
-		*pilha = novoNo;
+	if( *balde == NULL ) 
+		*balde = novoNo;
 	else {
-		novoNo->prox = *pilha;
-		*pilha = novoNo;
+		novoNo->prox = *balde;
+		*balde = novoNo;
 		}
 	}
 
-int tamBalde(  struct Pilha *pilha ){
+// Retorna o número de ítens no balde
+int tamBalde(  Balde *balde ){
 	int conta=0;
-	struct Pilha *tmp;
+	Balde *tmp;
 	
-	tmp = pilha;
+	tmp = balde;
 	
 	while( tmp != NULL ) {
 		conta++;
@@ -81,6 +84,9 @@ int tamBalde(  struct Pilha *pilha ){
 	}
 
 
+// Lê arquivo CSV e coloca referências aos dados em duas tabelas de dispersão construídas
+// usando diferentes algoritmos.
+// Salva um CSV com o número de itens em cada balde usando as duas funções de dispersão. 
 int main() {
 	int i;
 	FILE *entra; //, *sai;
@@ -88,7 +94,7 @@ int main() {
 	char nome[MAXSTR];
 
 	// Criação das hash tables, uma para cada agoritmo de hash
-	struct Pilha *hashtable[TAMHASH],  *hash0table[TAMHASH];	
+	Balde *hashtable[TAMHASH],  *hash0table[TAMHASH];	
 	for( i=0; i<TAMHASH; i++) {
 		hashtable[i]=NULL;
 		hash0table[i]=NULL;
@@ -100,7 +106,7 @@ int main() {
 		return -1;
 		}	
 		
-	printf("Lendo arquivo...\n");
+	printf("Lendo arquivo...\nConstruindo tabela de dispersão com %d baldes\n",TAMHASH);
 	i=0;
 	while( ! feof(entra) ){
 		fgets( linha, MAXLIN, entra );
