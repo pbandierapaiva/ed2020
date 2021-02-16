@@ -5,7 +5,7 @@
 *  
 */
 
-#define TAMHASH 10000
+#define TAMHASH 100000
 
 #include <stdio.h>
 #include <string.h>
@@ -52,7 +52,7 @@ struct Pilha {
 };
 
 void insereBalde(char *chave, unsigned long loc, struct Pilha **pilha) {
-	struct Pilha *novoNo, *tmp, *ant;
+	struct Pilha *novoNo;
 	
 	novoNo = malloc( sizeof(struct Pilha) );
 	strcpy( novoNo->nome,chave );
@@ -62,10 +62,8 @@ void insereBalde(char *chave, unsigned long loc, struct Pilha **pilha) {
 	if( *pilha == NULL ) 
 		*pilha = novoNo;
 	else {
-		tmp = *pilha;
-		while( tmp->prox != NULL )
-			tmp= tmp->prox;
-		tmp->prox = novoNo;		
+		novoNo->prox = *pilha;
+		*pilha = novoNo;
 		}
 	}
 
@@ -102,17 +100,15 @@ int main() {
 		return -1;
 		}	
 		
+	printf("Lendo arquivo...\n");
+	i=0;
 	while( ! feof(entra) ){
 		fgets( linha, MAXLIN, entra );
 		extrai( linha, NOME, nome );   // extrai da linha o campo nome
 		
 		// na tabela de dispersão "hashtable", acesso o índice retornado pela função "hash" ou "hash0" 
-		insereBalde( nome, ftell(entra), & (hashtable[ hash( nome, TAMHASH )])  );    
-		insereBalde( nome, ftell(entra), & (hash0table[ hash0( nome, TAMHASH )])  );
-		
-		i++;
-		if( ! i%100 )
-			printf("\b\b\b\b\b\b\b\b\b%d", i++);
+		insereBalde( nome, ftell(entra), &( hashtable[ hash( nome, TAMHASH ) ]) ) ;    
+		insereBalde( nome, ftell(entra), &( hash0table[ hash0( nome, TAMHASH ) ]) ) ;
 		}
 	
 	fclose(entra);
@@ -120,8 +116,10 @@ int main() {
 	// Como se dispersam os dados nas tabelas de dispersão?
 	// Conta quantos itens em cada balde
 	FILE *out;
-	
-	out = fopen("results_hash_10K.csv","w");  // tabelas de 100.000
+	char filename[40];
+
+	sprintf(filename, "results_hash_%d.csv", TAMHASH);	
+	out = fopen(filename,"w");  // tabelas de tamanho TAMHASH
 	
 	fprintf( out, "i,comhash,comhash0\n");	
 	for(i=0; i< TAMHASH; i++) {
