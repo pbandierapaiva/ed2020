@@ -5,7 +5,7 @@
 *  
 */
 
-#define TABMAX 10000
+#define TAMHASH 10000
 
 #include <stdio.h>
 #include <string.h>
@@ -46,8 +46,8 @@ unsigned int hash0(const char *key, unsigned int size)
 }
 
 struct Pilha {
-	char nome[300];
-	unsigned long int local;
+	char nome[300];			//
+	unsigned long int local;	// DADOS
 	struct Pilha *prox;
 };
 
@@ -89,9 +89,9 @@ int main() {
 	char linha[MAXLIN];
 	char nome[MAXSTR];
 
-	
-	struct Pilha *hashtable[TABMAX],  *hash0table[TABMAX];
-	for( i=0; i<TABMAX; i++) {
+	// Criação das hash tables, uma para cada agoritmo de hash
+	struct Pilha *hashtable[TAMHASH],  *hash0table[TAMHASH];	
+	for( i=0; i<TAMHASH; i++) {
 		hashtable[i]=NULL;
 		hash0table[i]=NULL;
 		}
@@ -104,22 +104,23 @@ int main() {
 		
 	while( ! feof(entra) ){
 		fgets( linha, MAXLIN, entra );
-		extrai( linha, NOME, nome );
-
-		insereBalde( nome, ftell(entra), &hashtable[ hash( nome, TABMAX )]);
-		insereBalde( nome, ftell(entra), &hash0table[ hash0( nome, TABMAX )]);
+		extrai( linha, NOME, nome );   // extrai da linha o campo nome
+		
+		// na tabela de dispersão "hashtable", acesso o índice retornado pela função "hash" ou "hash0" 
+		insereBalde( nome, ftell(entra), & (hashtable[ hash( nome, TAMHASH )])  );    
+		insereBalde( nome, ftell(entra), & (hash0table[ hash0( nome, TAMHASH )])  );
 		}
 	
 	fclose(entra);
 	
-	
+	// Como se dispersam os dados nas tabelas de dispersão?
 	// Conta quantos itens em cada balde
 	FILE *out;
 	
-	out = fopen("results_hash_1M.csv","w");
+	out = fopen("results_hash_10K.csv","w");  // tabelas de 100.000
 	
 	fprintf( out, "i,comhash,comhash0\n");	
-	for(i=0; i< TABMAX; i++) {
+	for(i=0; i< TAMHASH; i++) {
 		fprintf(out, "%d,%d,%d\n", i, tamBalde(hashtable[i]), tamBalde(hash0table[i]) );
 	}
 	fclose(out);
